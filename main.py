@@ -1,5 +1,5 @@
 # FINAL PROJECT - Antibiotics vs. Appendectomy for acute non-ruptured appendicitis in adults
-# A population-level cost-benefit analysis
+# A cost-benefit analysis
 
 # ATTEMPT AT USING A DECISION TREE INSTEAD OF A MARKOV MODEL
 
@@ -162,20 +162,19 @@ T6 = TerminalNode('T6', 10479, 90.0)
 T7 = TerminalNode('T7', 122900, 70.9)
 T8 = TerminalNode('T8', 10479, 90.0)
 
-# create C1
-C1 = ChanceNode('C1', 15799, 0, [C2, T3], [0.9972, 0.0028]) #p1
+
 # create C2
 C2 = ChanceNode('C2', 15843, 0, [T1, T2], [0.092, 0.908]) #p2
-# create C3
-C3 = ChanceNode('C3', 8675, 0, [T4, C4], [0.00075, 0.99925]) #p3
-# create C4
-C4 = ChanceNode('C4', 8678, 0, [T5, C5], [0.74, 0.26]) #p4
-# create C5
-C5 = ChanceNode('C5', 20793, 0, [T6, C6], [0.0028, 0.9972]) #p5
+# create C1
+C1 = ChanceNode('C1', 15799, 0, [C2, T3], [0.9972, 0.0028]) #p1
 # create C6
 C6 = ChanceNode('C6', 20822, 0, [T7, T8], [0.092, 0.908]) #p6
-
-## WHY AREN'T THESE WORKING? Says they are not defined...
+# create C5
+C5 = ChanceNode('C5', 20793, 0, [T6, C6], [0.0028, 0.9972]) #p5
+# create C4
+C4 = ChanceNode('C4', 8678, 0, [T5, C5], [0.74, 0.26]) #p4
+# create C3
+C3 = ChanceNode('C3', 8675, 0, [T4, C4], [0.00075, 0.99925]) #p3
 
 # create D1
 D1 = DecisionNode('D1', 0, 0, [C1, C3])
@@ -184,8 +183,8 @@ D1 = DecisionNode('D1', 0, 0, [C1, C3])
 # Cost-utility
 arm1_cost = C1.get_expected_cost()
 arm1_utility = C1.get_expected_utility()
-arm2_cost = C2.get_expected_cost()
-arm2_utility = C2.get_expected_utility()
+arm2_cost = C3.get_expected_cost()
+arm2_utility = C3.get_expected_utility()
 
 print('Expected cost and utility of Appendectomy')
 print(arm1_cost)
@@ -195,5 +194,5 @@ print(arm2_cost)
 print(arm2_utility)
 
 # Incremental Cost Effectiveness Ratio (ICER)
-ICER_info = (arm2_cost-arm1_cost)/(arm2_utility - arm1_utility)
-print('ICER of Antibiotics with respect to Appendectomy:', ICER_info)
+ICER_info = (arm1_cost-arm2_cost)/(arm1_utility - arm2_utility)
+print('ICER of Appendectomy with respect to Antibiotics:', ICER_info)
