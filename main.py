@@ -149,40 +149,51 @@ class DecisionNode(Node):
 
 
 #######################
-# See figure DecisionTree.png (from the project menu) for the structure of this decision tree
+# See figure DecisionTree_Appendicitis.png for the structure of this decision tree
 ########################
 
 # create the terminal nodes
-T1 = TerminalNode('T1', 10, 0.5)
-T2 = TerminalNode('T2', 20, 0.6)
-T3 = TerminalNode('T3', 30, 0.7)
-T4 = TerminalNode('T4', 40, 0.8)
-T5 = TerminalNode('T5', 50, 0.9)
+T1 = TerminalNode('T1', 112421, 70.9)
+T2 = TerminalNode('T2', 6058, 94.5)
+T3 = TerminalNode('T3', 6058, 0)
+T4 = TerminalNode('T4', 4421, 0)
+T5 = TerminalNode('T5', 4421, 90.4)
+T6 = TerminalNode('T6', 10479, 90.0)
+T7 = TerminalNode('T7', 122900, 70.9)
+T8 = TerminalNode('T8', 10479, 90.0)
 
-# create C2
-C2 = ChanceNode('C2', 35, 0, [T1, T2], [0.7, 0.3])
 # create C1
-C1 = ChanceNode('C1', 25, 0, [C2, T3], [0.2, 0.8])
+C1 = ChanceNode('C1', 15799, 0, [C2, T3], [0.9972, 0.0028]) #p1
+# create C2
+C2 = ChanceNode('C2', 15843, 0, [T1, T2], [0.092, 0.908]) #p2
 # create C3
-C3 = ChanceNode('C3', 45, 0, [T4, T5], [0.1, 0.9])
+C3 = ChanceNode('C3', 8675, 0, [T4, C4], [0.00075, 0.99925]) #p3
+# create C4
+C4 = ChanceNode('C4', 8678, 0, [T5, C5], [0.74, 0.26]) #p4
+# create C5
+C5 = ChanceNode('C5', 20793, 0, [T6, C6], [0.0028, 0.9972]) #p5
+# create C6
+C6 = ChanceNode('C6', 20822, 0, [T7, T8], [0.092, 0.908]) #p6
+
+## WHY AREN'T THESE WORKING? Says they are not defined...
 
 # create D1
 D1 = DecisionNode('D1', 0, 0, [C1, C3])
 
 
-# ANSWER TO QUESTION 3
+# Cost-utility
 arm1_cost = C1.get_expected_cost()
 arm1_utility = C1.get_expected_utility()
-arm2_cost = C3.get_expected_cost()
-arm2_utility = C3.get_expected_utility()
+arm2_cost = C2.get_expected_cost()
+arm2_utility = C2.get_expected_utility()
 
-print('Expected cost and utility of Arm 1')
+print('Expected cost and utility of Appendectomy')
 print(arm1_cost)
 print(arm1_utility)
-print('Expected cost and utility of Arm 2')
+print('Expected cost and utility of Antibiotics')
 print(arm2_cost)
 print(arm2_utility)
 
-# ANSWER TO QUESTION 4
+# Incremental Cost Effectiveness Ratio (ICER)
 ICER_info = (arm2_cost-arm1_cost)/(arm2_utility - arm1_utility)
-print('ICER of Arm 2 with respect to Arm 1:', ICER_info)
+print('ICER of Antibiotics with respect to Appendectomy:', ICER_info)
